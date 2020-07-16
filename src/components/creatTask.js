@@ -6,8 +6,8 @@ const CreateTask = (props) => {
   const [taskDetail, updateTaskDetails] = useState({
     title: "",
     tags: "",
-    start: "",
-    end: "",
+    start: "00",
+    end: "00",
   });
 
   function updatefeildState(event) {
@@ -44,7 +44,7 @@ const CreateTask = (props) => {
       <Form.Group>
         <Form.Label>Start Time:</Form.Label>
         <Form.Control
-          type="number"
+          type="time"
           placeholder="Enter start Time"
           value={taskDetail.start}
           id="start"
@@ -54,7 +54,7 @@ const CreateTask = (props) => {
       <Form.Group>
         <Form.Label>End time:</Form.Label>
         <Form.Control
-          type="number"
+          type="time"
           placeholder="Enter end time"
           value={taskDetail.end}
           id="end"
