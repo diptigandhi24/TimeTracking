@@ -1,4 +1,5 @@
 .App {
+  margin-top: 100px;
   text-align: center;
 }
 
@@ -36,3 +37,10 @@
     transform: rotate(360deg);
   }
 }
+
+/* form > input {
+  display: inline-block;
+}
+input {
+  margin-left: 100px;
+} */
