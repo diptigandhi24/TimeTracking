@@ -44,7 +44,7 @@ const CreateTask = (props) => {
       <Form.Group>
         <Form.Label>Start Time:</Form.Label>
         <Form.Control
-          type="string"
+          type="number"
           placeholder="Enter start Time"
           value={taskDetail.start}
           id="start"
@@ -54,17 +54,14 @@ const CreateTask = (props) => {
       <Form.Group>
         <Form.Label>End time:</Form.Label>
         <Form.Control
-          type="string"
+          type="number"
           placeholder="Enter end time"
           value={taskDetail.end}
           id="end"
           onChange={(e) => updatefeildState(e)}
         />
       </Form.Group>
-      <Button
-        variant="primary"
-        onClick={() => console.log("Yay you have create a task")}
-      >
+      <Button variant="primary" onClick={() => saveTask(taskDetail)}>
         Create Task
       </Button>
     </Form>
