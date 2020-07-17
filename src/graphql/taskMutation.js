@@ -13,3 +13,11 @@ export const INSERT_TASKS = gql`
     }
   }
 `;
+
+export const DELETE_TASK = gql`
+  mutation($id: Int) {
+    delete_tasks(where: { id: { _eq: $id } }) {
+      affected_rows
+    }
+  }
+`;

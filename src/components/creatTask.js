@@ -3,24 +3,8 @@ import "../styles/App.css";
 import { Form } from "react-bootstrap";
 // import saveTask from "./data/saveTask";
 import { gql, useMutation } from "@apollo/client";
-import { INSERT_TASKS } from "../graphql/taskMutation";
+import { INSERT_TASKS, DELETE_TASK } from "../graphql/taskMutation";
 import { getTimeStamp } from "./utils";
-const POST_MUTATION = gql`
-  mutation PostMutation(
-    $title: String!
-    $start_time: String!
-    $end_time: String!
-  ) {
-    insert_tasks(
-      objects: [{ title: $title, start_time: $start_time, end_time: $end_time }]
-    ) {
-      returning {
-        id
-        title
-      }
-    }
-  }
-`;
 
 const CreateTask = (props) => {
   const [taskDetail, updateTaskDetails] = useState({
