@@ -24,7 +24,7 @@ const POST_MUTATION = gql`
     }
   }
 `;
-console.log("Post Mutation", POST_MUTATION);
+
 const CreateTask = (props) => {
   const [taskDetail, updateTaskDetails] = useState({
     title: "",
