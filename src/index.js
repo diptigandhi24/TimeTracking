@@ -3,14 +3,15 @@ import ReactDOM from "react-dom";
 import "./styles/index.css";
 import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
-import gql from "graphql-tag";
+// import gql from "graphql-tag";
 
 // 1
-import { ApolloProvider } from "react-apollo";
-import { ApolloClient } from "apollo-client";
+import { ApolloProvider, ApolloClient } from "@apollo/client";
+// import { ApolloClient } from "apollo-client";
 import { createHttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { setContext } from "@apollo/client/link/context";
+import { gql, useMutation } from "@apollo/client";
 // 2
 const httpLink = createHttpLink({
   uri: "https://test-323.herokuapp.com/v1/graphql",
@@ -32,31 +33,65 @@ const authLink = setContext((_, { headers }) => {
     },
   };
 });
+
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
-client
-  .query({
-    query: gql`
-      query {
-        tasks(distinct_on: [title]) {
-          created_at
-          end_time
-          id
-          start_time
-          title
-          updated_at
-        }
+// client
+//   .query({
+//     query: gql`
+//       query {
+//         tasks(distinct_on: [title]) {
+//           created_at
+//           end_time
+//           id
+//           start_time
+//           title
+//           updated_at
+//         }
+//       }
+//     `,
+//   })
+//   .then((result) => console.log(result));
+// start_time: $start_time, end_time: $end_time
+// start_time: "2020-03-01 00:00:00-06",
+// end_time: "2020-03-01 00:02:00-06",
+// $start_time: String!
+// $end_time: String!
+const INSERT_TASKS = gql`
+  mutation InsertTasks($title: String!, $start_time: timestamptz!) {
+    insert_tasks(objects: [{ title: $title, start_time: $start_time }]) {
+      returning {
+        id
+        title
       }
-    `,
-  })
-  .then((result) => console.log(result));
-
+    }
+  }
+`;
+function InsertTasks() {
+  const [insertTasks, { data }] = useMutation(INSERT_TASKS);
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        insertTasks({
+          variables: {
+            title: "Kitto",
+            start_time: "2020-03-01 00:00:00-06",
+          },
+        });
+      }}
+    >
+      <button type="submit">Add Todo</button>
+    </form>
+  );
+}
 // 4
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <App />
+    {/* <App /> */}
+    <InsertTasks />
   </ApolloProvider>,
   document.getElementById("root")
 );

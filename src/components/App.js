@@ -25,7 +25,7 @@ let mockTaskList = [{ title: "create App" }, { title: "create Graphql" }];
 function App() {
   return (
     <div className="App">
-      <CreateTask />
+      {/* <CreateTask /> */}
       <TaskList taskList={mockTaskList} />
     </div>
   );
