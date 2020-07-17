@@ -2,12 +2,9 @@ import React, { useState } from "react";
 import "../styles/App.css";
 import { Form } from "react-bootstrap";
 // import saveTask from "./data/saveTask";
-// import { Mutation } from "react-apollo";
-// import gql from "graphql-tag";
-// import { useMutation } from "apollo-client";
-import { useMutation } from "@apollo/react-hooks";
-import gql from "graphql-tag";
-
+import { gql, useMutation } from "@apollo/client";
+import { INSERT_TASKS } from "../graphql/taskMutation";
+import { getTimeStamp } from "./utils";
 const POST_MUTATION = gql`
   mutation PostMutation(
     $title: String!
@@ -32,7 +29,7 @@ const CreateTask = (props) => {
     start: "00",
     end: "00",
   });
-  const [addTodo, { data }] = useMutation(POST_MUTATION);
+  const [insertTasks] = useMutation(INSERT_TASKS);
 
   function updatefeildState(event) {
     let { id, value } = event.target;
@@ -85,17 +82,19 @@ const CreateTask = (props) => {
         />
       </Form.Group>
       <button
-        onClick={() =>
-          addTodo({
+        type="submit"
+        onClick={(e) => {
+          e.preventDefault();
+          insertTasks({
             variables: {
-              title: "Waffles",
-              start_time: "2020-03-01 00:00:00-06",
-              end_time: "2020-03-01 00:02:00-06",
+              title: taskDetail.title,
+              start_time: getTimeStamp(taskDetail.start),
+              end_time: getTimeStamp(taskDetail.end),
             },
-          })
-        }
+          });
+        }}
       >
-        Submit
+        Create Task
       </button>
     </Form>
   );
