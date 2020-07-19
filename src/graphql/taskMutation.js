@@ -21,3 +21,19 @@ export const DELETE_TASK = gql`
     }
   }
 `;
+
+export const EDIT_TASK = gql`
+  mutation UpdateTask(
+    $title: String!
+    $start_time: timestamptz!
+    $end_time: timestamptz!
+    $id: Int
+  ) {
+    update_tasks(
+      _set: { title: $title, start_time: $start_time, end_time: $end_time }
+      where: { id: { _eq: $id } }
+    ) {
+      affected_rows
+    }
+  }
+`;

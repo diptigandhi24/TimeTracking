@@ -4,8 +4,10 @@ import "./styles/index.css";
 import * as serviceWorker from "./serviceWorker";
 import { ApolloProvider } from "@apollo/client";
 import apolloClient from "./graphql/apolloClient";
-import CreateTask from "./components/creatTask";
+// import CreateTask from "./components/creatTask";
 import { TaskList } from "./components/TaskList";
+import CreateEditTask from "./components/CreateEditTaskUI";
+import { INSERT_TASKS } from "./graphql/taskMutation";
 // client
 //   .query({
 //     query: gql`
@@ -45,7 +47,8 @@ ReactDOM.render(
   <ApolloProvider client={apolloClient}>
     {/* <App /> */}
     {/* <InsertTasks /> */}
-    <CreateTask />
+    {/* <CreateTask /> */}
+    <CreateEditTask mutationQuery={INSERT_TASKS} name={"Create Button"} />
     <TaskList />
   </ApolloProvider>,
   document.getElementById("root")

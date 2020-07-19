@@ -1,19 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/App.css";
 import { Form } from "react-bootstrap";
 // import saveTask from "./data/saveTask";
 import { gql, useMutation } from "@apollo/client";
-import { INSERT_TASKS, DELETE_TASK } from "../graphql/taskMutation";
+import { DELETE_TASK } from "../graphql/taskMutation";
 import { getTimeStamp } from "./utils";
-
+/**
+ *
+ *  props {
+ * mutation query,
+ * name
+ *
+ * }
+ */
 const CreateTask = (props) => {
-  const [taskDetail, updateTaskDetails] = useState({
-    title: "",
-    tags: "",
-    start: "00",
-    end: "00",
-  });
-  const [insertTasks] = useMutation(INSERT_TASKS);
+  const [taskDetail, updateTaskDetails] = useState(props.prefilled);
+  const [insertTasks] = useMutation(props.mutationQuery); //dynamic graphql query
+  console.log(
+    "Remove Edit form",
+    props.disappearAfterUpdate === true,
+    props.removeEditForm !== undefined
+  );
+
   console.log("Create task component mounted");
   function updatefeildState(event) {
     let { id, value } = event.target;
@@ -69,19 +77,38 @@ const CreateTask = (props) => {
         type="submit"
         onClick={(e) => {
           e.preventDefault();
-          insertTasks({
-            variables: {
-              title: taskDetail.title,
-              start_time: getTimeStamp(taskDetail.start),
-              end_time: getTimeStamp(taskDetail.end),
-            },
-          });
+          if (taskDetail.id === "") {
+            insertTasks({
+              variables: {
+                title: taskDetail.title,
+                start_time: getTimeStamp(taskDetail.start),
+                end_time: getTimeStamp(taskDetail.end),
+              },
+            });
+          } else {
+            insertTasks({
+              variables: {
+                title: taskDetail.title,
+                start_time: getTimeStamp(taskDetail.start),
+                end_time: getTimeStamp(taskDetail.end),
+                id: taskDetail.id,
+              },
+            });
+          }
         }}
       >
-        Create Hell
+        {props.name}
       </button>
     </Form>
   );
 };
-
-// export default CreateTask;
+CreateTask.defaultProps = {
+  prefilled: {
+    title: "",
+    tags: "",
+    start: "00",
+    end: "00",
+    id: "",
+  },
+};
+export default CreateTask;
