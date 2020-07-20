@@ -12,11 +12,21 @@ export const Task = (props) => {
   //       loadEditTask(undefined);
   //     }
   //   });
-  //   console.log("Printing the details of current props LI", props.item);
+  console.log("Printing the details of current props LI", props.item.title);
   function editTask(e) {
-    console.log(" edited component", e.target.getAttribute("data-taskfield"));
+    console.log(" edited component", props.item.title);
     loadEditTask(
-      <CreateEditTaskUI mutationQuery={EDIT_TASK} name={"Edit Button"} />
+      <CreateEditTaskUI
+        mutationQuery={EDIT_TASK}
+        name={"Edit Button"}
+        prefilled={{
+          title: props.item.title,
+          start_time: props.item.start_time,
+          end_time: props.item.end_time,
+          id: props.item.id,
+        }}
+        removeEditForm={loadEditTask}
+      />
     );
   }
 
@@ -26,10 +36,9 @@ export const Task = (props) => {
         {props.taskName}
         <button
           onClick={(e) => {
-            editTask(e);
+            editTask(e, props.item);
           }}
           value={[props.item]}
-          data-taskfield={props.item}
         >
           Edit
         </button>

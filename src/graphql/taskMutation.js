@@ -33,7 +33,9 @@ export const EDIT_TASK = gql`
       _set: { title: $title, start_time: $start_time, end_time: $end_time }
       where: { id: { _eq: $id } }
     ) {
-      affected_rows
+      returning {
+        title
+      }
     }
   }
 `;

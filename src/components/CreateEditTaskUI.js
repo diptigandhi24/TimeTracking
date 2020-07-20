@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import "../styles/App.css";
 import { Form } from "react-bootstrap";
 // import saveTask from "./data/saveTask";
@@ -19,10 +19,11 @@ const CreateTask = (props) => {
   console.log(
     "Remove Edit form",
     props.disappearAfterUpdate === true,
-    props.removeEditForm !== undefined
+    props.removeEditForm
   );
+  let removeEdit = props.removeEditForm;
 
-  console.log("Create task component mounted");
+  console.log("Create task component mounted", props.prefilled, removeEdit);
   function updatefeildState(event) {
     let { id, value } = event.target;
 
@@ -30,7 +31,13 @@ const CreateTask = (props) => {
       return { ...prev, [id]: value };
     });
   }
-
+  const handleremoveForm = useCallback(
+    (event) => {
+      console.log("running useCallback", removeEdit);
+      removeEdit(undefined);
+    },
+    [removeEdit]
+  );
   return (
     <Form submit={props.task}>
       <Form.Group>
@@ -94,6 +101,7 @@ const CreateTask = (props) => {
                 id: taskDetail.id,
               },
             });
+            handleremoveForm();
           }
         }}
       >
@@ -110,5 +118,6 @@ CreateTask.defaultProps = {
     end: "00",
     id: "",
   },
+  removeEditForm: () => {},
 };
 export default CreateTask;
