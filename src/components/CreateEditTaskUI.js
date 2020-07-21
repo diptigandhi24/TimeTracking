@@ -2,17 +2,10 @@ import React, { useState, useCallback } from "react";
 import "../styles/App.css";
 import { Form } from "react-bootstrap";
 // import saveTask from "./data/saveTask";
-import { gql, useMutation } from "@apollo/client";
-import { DELETE_TASK } from "../graphql/taskMutation";
+import { useMutation } from "@apollo/client";
+
 import { getTimeStamp } from "./utils";
-/**
- *
- *  props {
- * mutation query,
- * name
- *
- * }
- */
+
 const CreateTask = (props) => {
   const [taskDetail, updateTaskDetails] = useState(props.prefilled);
   const [insertTasks] = useMutation(props.mutationQuery); //dynamic graphql query
@@ -21,9 +14,8 @@ const CreateTask = (props) => {
     props.disappearAfterUpdate === true,
     props.removeEditForm
   );
-  let removeEdit = props.removeEditForm;
+  let removeEdit = props.updateEditTask;
 
-  console.log("Create task component mounted", props.prefilled, removeEdit);
   function updatefeildState(event) {
     let { id, value } = event.target;
 
@@ -31,13 +23,14 @@ const CreateTask = (props) => {
       return { ...prev, [id]: value };
     });
   }
+
   const handleremoveForm = useCallback(
     (event) => {
-      console.log("running useCallback", removeEdit);
       removeEdit(undefined);
     },
     [removeEdit]
   );
+
   return (
     <Form submit={props.task}>
       <Form.Group>
@@ -118,6 +111,6 @@ CreateTask.defaultProps = {
     end: "00",
     id: "",
   },
-  removeEditForm: () => {},
+  updateEditTask: () => {},
 };
 export default CreateTask;

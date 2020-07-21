@@ -6,7 +6,7 @@ import CreateEditTaskUI from "./CreateEditTaskUI";
 import { EDIT_TASK } from "../graphql/taskMutation";
 export const Task = (props) => {
   const [deleteTasks] = useMutation(DELETE_TASK);
-  const [editTaskComponent, loadEditTask] = useState(undefined);
+  const [editTaskComponent, createEditTask] = useState(undefined);
   //   useEffect(() => {
   //     if (editTaskComponent !== undefined) {
   //       loadEditTask(undefined);
@@ -15,7 +15,7 @@ export const Task = (props) => {
   console.log("Printing the details of current props LI", props.item.title);
   function editTask(e) {
     console.log(" edited component", props.item.title);
-    loadEditTask(
+    createEditTask(
       <CreateEditTaskUI
         mutationQuery={EDIT_TASK}
         name={"Edit Button"}
@@ -25,7 +25,7 @@ export const Task = (props) => {
           end_time: props.item.end_time,
           id: props.item.id,
         }}
-        removeEditForm={loadEditTask}
+        updateEditTask={createEditTask}
       />
     );
   }
